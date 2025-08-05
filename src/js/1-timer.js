@@ -6,7 +6,8 @@ import 'izitoast/dist/css/iziToast.min.css';
 
 let userSelectedDate = null;
 let diff = null;
-let intervalId = null;
+let intervalId1 = null;
+let intervalId2 = null;
 
 const startButton = document.querySelector('[data-start]');
 startButton.disabled = true;
@@ -79,15 +80,9 @@ function updateTimer() {
   let seconds2 = +seconds1.textContent;
 
   if (days2 + hours2 + minutes2 + seconds2 > 0) {
-    if (seconds2 % 10 === 0) {
-      iziToast.success({
-        title: '10 sec past!',
-        position: 'topCenter',
-      });
-    }
     return { days1, hours1, minutes1, seconds1 };
   } else {
-    clearInterval(intervalId);
+    clearInterval(intervalId1, intervalId2);
     iziToast.success({
       title: 'Timer stopped!',
       position: 'topCenter',
@@ -96,5 +91,11 @@ function updateTimer() {
 }
 
 startButton.addEventListener('click', () => {
-  intervalId = setInterval(updateTimer, 1000);
+  intervalId1 = setInterval(updateTimer, 1000);
+  intervalId2 = setInterval(() => {
+    iziToast.success({
+      title: '10 sec past!',
+      position: 'topCenter',
+    });
+  }, 10000);
 });
